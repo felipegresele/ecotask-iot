@@ -2,6 +2,7 @@ import os
 import google.generativeai as genai
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
+from db_utils import log_chat
 
 load_dotenv()
 
@@ -45,6 +46,9 @@ def generate_plan():
 
         # Acessa o texto da resposta
         generated_plan = response.text
+
+        # Registrar no Postgres
+        log_chat(sustainability_goal, generated_plan)
 
         return jsonify({"plan": generated_plan})
 
