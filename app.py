@@ -45,7 +45,10 @@ def generate_plan():
         response = model.generate_content(prompt)
 
         # Acessa o texto da resposta
-        generated_plan = response.text
+        try:
+            generated_plan = response.candidates[0].content.parts[0].text
+        except Exception:
+            generated_plan = "Erro ao ler resposta da IA."
 
         # Registrar no Postgres
         log_chat(sustainability_goal, generated_plan)
