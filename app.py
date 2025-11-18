@@ -1,13 +1,14 @@
 import os
 import google.generativeai as genai
 from flask import Flask, request, jsonify
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
 # Configura a API Key do Gemini
-# É recomendado carregar a chave de uma variável de ambiente em produção
-# Mas para simplicidade, usaremos a chave diretamente aqui, como solicitado.
-genai.configure(api_key="AIzaSyDR5DlOeySR6FIoz37hi6H4AFg3IjsMzzw")
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 @app.route('/api/generate-plan', methods=['POST'])
 def generate_plan():
@@ -20,10 +21,24 @@ def generate_plan():
             return jsonify({"error": "userContext and sustainabilityGoal are required"}), 400
 
         # Constrói o prompt para o Gemini
-        prompt = f"""Atuando como um consultor de sustentabilidade experiente, crie um plano de ação detalhado e prático para {user_context} com o objetivo de {sustainability_goal}.
-Inclua pelo menos 5 passos acionáveis, dicas sobre como superar desafios comuns, recursos úteis (ex: tipos de lixo, pontos de coleta comuns no Brasil) e uma breve seção sobre o impacto positivo dessas ações.
-Use linguagem encorajadora e fácil de entender.
-Formate a resposta como um texto contínuo, sem formatação Markdown de blocos de código."""
+        prompt = f"""Atuando como um arquiteto de soluções de sustentabilidade e guia pessoal, sua missão é criar um \"Plano de Missão Ambiental\" desafiador e inspirador para {user_context} com o objetivo principal de {sustainability_goal}.
+
+        Este plano deve ser composto por:
+        1.  **Missão Principal:** Um resumo conciso do objetivo.
+        2.  **Passos Acionáveis (5 a 7 passos):** Uma lista numerada de ações concretas e quantificáveis, se possível, que o usuário pode realizar. Cada passo deve ser uma \"tarefa\" a ser concluída.
+            *   Sugira como cada passo pode ser acompanhado ou \"concluído\".
+            *   Pense em ações que poderiam, no futuro, ser conectadas a dados de IoT ou comportamentos (IoB).
+        3.  **Dicas para Superar Desafios:** Conselhos práticos para as dificuldades comuns associadas a esses passos no contexto brasileiro.
+        4.  **Recursos e Ferramentas Úteis:** Sugestões de aplicativos, sites, tecnologias ou iniciativas locais (com exemplos no Brasil) que podem auxiliar na missão.
+        5.  **Impacto Esperado:** Uma breve descrição do impacto positivo que a conclusão desta missão terá.
+        6.  **Frase Motivacional:** Uma frase para inspirar o usuário a começar.
+
+        Caso o usuário pergunte algo fora desse tema, responda educadamente:
+        "Desculpe — só posso responder perguntas sobre tarefas e atitudes que ajudam a natureza."
+        
+        Evite temas que não estejam diretamente ligados ao meio ambiente.
+
+        Use uma linguagem encorajadora, clara e orientada a resultados, sem formatação Markdown de blocos de código."""
 
         model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt)
