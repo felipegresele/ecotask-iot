@@ -1,4 +1,5 @@
 import psycopg2
+import os
 
 def log_chat(user_question, ai_response):
 
