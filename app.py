@@ -33,6 +33,11 @@ def generate_plan():
         5.  **Impacto Esperado:** Uma breve descrição do impacto positivo que a conclusão desta missão terá.
         6.  **Frase Motivacional:** Uma frase para inspirar o usuário a começar.
 
+        Caso o usuário pergunte algo fora desse tema, responda educadamente:
+        "Desculpe — só posso responder perguntas sobre tarefas e atitudes que ajudam a natureza."
+        
+        Evite temas que não estejam diretamente ligados ao meio ambiente.
+
         Use uma linguagem encorajadora, clara e orientada a resultados, sem formatação Markdown de blocos de código."""
 
         model = genai.GenerativeModel('gemini-2.5-flash')
