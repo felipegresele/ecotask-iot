@@ -63,7 +63,7 @@ Certifique-se de ter o Python 3 instalado em seu sistema.
 
     O servidor será iniciado e ficará disponível em `http://127.0.0.1:5000`.
 
-### Testando a API
+### Testando a API no Postman
 
 Para testar a API, você pode enviar uma requisição POST para o endpoint `/api/generate-plan`. Abra um **novo terminal** (sem fechar o terminal onde o servidor Flask está rodando) e use o `curl`:
 
