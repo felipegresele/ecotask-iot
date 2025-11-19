@@ -31,6 +31,18 @@ def generate_plan():
 
         if not user_context or not sustainability_goal:
             return jsonify({"error": "userContext and sustainabilityGoal are required"}), 400
+        
+        # Lista simples de temas que NÃO são ambientais
+        forbidden_terms = [
+            "programa", "programação", "jogo", "carro", "dinheiro",
+            "amor", "faculdade", "computador", "estudo", "trabalho"
+        ]
+
+        # Se o usuário pedir algo fora do meio ambiente, responde direto
+        if any(term in sustainability_goal.lower() for term in forbidden_terms):
+            resposta = "Desculpe — só posso responder perguntas sobre tarefas e atitudes que ajudam a natureza."
+            log_chat(sustainability_goal, resposta)
+            return jsonify({"plan": resposta})
 
         # Constrói o prompt para o Gemini
         prompt = f"""Atuando como um arquiteto de soluções de sustentabilidade e guia pessoal, sua missão é criar um \"Plano de Missão Ambiental\" desafiador e inspirador para {user_context} com o objetivo principal de {sustainability_goal}.
