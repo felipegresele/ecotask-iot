@@ -60,4 +60,9 @@ def generate_plan():
 
 if __name__ == '__main__':
     # Para rodar em ambiente de desenvolvimento
+    print("Iniciando verificação do esquema do banco de dados...")
+    setup_database() 
+    print("Esquema verificado. Iniciando servidor Flask.")
+    
+    # Para rodar em ambiente de desenvolvimento
     app.run(host='0.0.0.0', port=5000)
