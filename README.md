@@ -1,81 +1,164 @@
-# Projeto IoT GS-FIAP - Consultor de Sustentabilidade com Gemini API
+# 🌱 EcoTask – IA Generativa + IoT + Web + Mobile  
+**Projeto Integrado – Disruptive Architectures: IoT, IOB & Generative IA**
 
-Este projeto é uma aplicação Flask simples que atua como um consultor de sustentabilidade, utilizando a API do Google Gemini (modelo `gemini-2.5-flash`). Ele recebe um contexto do usuário e um objetivo de sustentabilidade, e então gera um plano de ação detalhado para alcançar esse objetivo.
+Este repositório contém a **API de Inteligência Artificial (Python)** utilizada no projeto EcoTask.  
+A IA é responsável por gerar **planos sustentáveis**, oferecendo dicas personalizadas conforme o contexto do usuário.
 
-## Funcionalidades
+Toda a demonstração detalhada das funcionalidades da aplicação está disponível **no vídeo de apresentação oficial**.
 
-- Recebe `userContext` e `sustainabilityGoal` via API REST.
-- Utiliza a API do Gemini para gerar planos de ação de sustentabilidade.
-- Retorna o plano gerado em formato JSON.
+---
 
-## Configuração e Execução
+# 🚀 1. Tecnologias Utilizadas
+- **Python + Google Gemini 2.5 Flash**
+- **Render – Deploy da API**
+- **PostgreSQL em deploy** (compartilhado com o projeto)
+- **Integração com o Mobile** (React Native)
+- **Integração com o Back-end Java (IoT)**
 
-Siga os passos abaixo para configurar e executar o projeto em sua máquina local.
+---
 
-### Pré-requisitos
+# 🤖 2. Endpoint Principal da IA (Python) – *Deploy ativo*
 
-Certifique-se de ter o Python 3 instalado em seu sistema.
-
-### Instalação
-
-1.  **Clone o repositório** (se ainda não o fez):
-
-    ```bash
-    git clone <URL_DO_SEU_REPOSITORIO>
-    cd iot
-    ```
-
-    *(Substitua `<URL_DO_SEU_REPOSITORIO>` pelo link real do seu repositório, se aplicável.)*
-
-2.  **Crie e ative um ambiente virtual** (recomendado):
-
-    ```bash
-    python -m venv venv
-    ```
-
-    -   No Windows (PowerShell):
-        ```bash
-        .\venv\Scripts\activate
-        ```
-    -   No macOS/Linux (Bash/Zsh):
-        ```bash
-        source venv/bin/activate
-        ```
-
-3.  **Instale as dependências**:
-
-    Com o ambiente virtual ativado, instale as bibliotecas necessárias usando `pip`:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-### Execução da Aplicação
-
-1.  **Inicie o servidor Flask**:
-
-    Com o ambiente virtual ainda ativado, execute o seguinte comando no diretório `iot`:
-
-    ```bash
-    python app.py
-    ```
-    python d:\gs-fiap\iot\app.py
-
-    O servidor será iniciado e ficará disponível em `http://127.0.0.1:5000`.
-
-### Testando a API no Postman
-
-Para testar a API, você pode enviar uma requisição POST para o endpoint `/api/generate-plan`. Abra um **novo terminal** (sem fechar o terminal onde o servidor Flask está rodando) e use o `curl`:
-
-```bash
-curl -X POST -H "Content-Type: application/json" -d "{
-    \"userContext\": \"uma família com duas crianças em um apartamento\",
-    \"sustainabilityGoal\": \"reduzir o consumo de energia elétrica\"
-}" http://127.0.0.1:5000/api/generate-plan
+### **URL:**
+```
+https://ecotask-iot.onrender.com/api/generate-plan
 ```
 
-Você deverá receber uma resposta JSON contendo o plano de sustentabilidade gerado pela IA.
+### Como testar:
+Basta acessar o endpoint acima via Postman, Insomnia ou front-end.
 
-### Chave da API do Gemini
+### **Exemplo de JSON para enviar:**
+```json
+{
+  "userContext": "sou um estudante que mora sozinho",
+  "sustainabilityGoal": "quero começar a reciclar plástico e reduzir lixo"
+}
+```
 
-A chave da API do Gemini está atualmente incorporada diretamente no arquivo `app.py` para simplicidade de demonstração. Em um ambiente de produção, é fortemente recomendado o uso de variáveis de ambiente para a chave da API.
+### 📌 Regra importante da IA
+A IA está **treinada e limitada ao tema sustentabilidade**.
+
+Se o usuário enviar algo **fora do tema**, a resposta será:
+
+```
+"Desculpe — só posso responder perguntas sobre tarefas e atitudes que ajudam a natureza."
+```
+
+---
+
+# 🗄️ 3. Banco de Dados (Python)
+A API em Python utiliza um **banco PostgreSQL hospedado em deploy**, garantindo persistência e integração com o sistema.
+
+O link do banco não é exibido por segurança.
+
+---
+
+# 📱 4. Integração com o Mobile
+O aplicativo Mobile possui a aba **EcoTask IA**, que consome diretamente o endpoint:
+
+```
+https://ecotask-iot.onrender.com/api/generate-plan
+```
+
+Ou seja, o mobile está **totalmente conectado à IA do Python**.
+
+---
+
+# 🔧 5. Integração com Java (IoT)
+
+Embora a IA principal seja a do Python, o projeto também possui integração com **back-end Java (IoT)** opcional, para demonstrar interoperabilidade entre disciplinas.
+
+---
+
+## ✔️ 5.1 Criar Conta no Java
+
+### Endpoint:
+```
+POST https://ecotask-java.onrender.com/auth/register
+```
+
+### JSON obrigatório:
+```json
+{
+  "username": "admin",
+  "email": "felipe6@example.com",
+  "password": "admin123",
+  "role": "ADMIN"
+}
+```
+
+⚠️ **Importante:**  
+A role **DEVE ser sempre ADMIN** para ter autorização aos endpoints protegidos.
+
+---
+
+## ✔️ 5.2 Fazer Login para obter o Token
+
+### Endpoint:
+```
+POST https://ecotask-java.onrender.com/auth/login
+```
+
+### JSON:
+```json
+{
+  "email": "felipe6@example.com",
+  "password": "admin123"
+}
+```
+
+A resposta trará um **JWT Token**.  
+Você deve colocá-lo como **Bearer Token** nas próximas requisições.
+
+---
+
+## ✔️ 5.3 Testar a IA integrada no Java (IoT)
+
+### Endpoint:
+```
+GET https://ecotask-java.onrender.com/api/v1/plano-missao/gerar?context=moro sozinho em apartamento&goal=como economizar energia e agua
+```
+
+### Como usar:
+- O token JWT deve estar no **Authorization → Bearer Token**
+- Os valores de `context` e `goal` são enviados como **query params**
+
+Exemplo:
+```
+context=moro sozinho em apartamento
+goal=como economizar energia e agua
+```
+
+---
+
+# 🎥 6. Vídeo de Apresentação
+O vídeo contém **todas as funcionalidades completas do projeto**, incluindo:
+
+- Demonstração da IA Python  
+- Integração com o Mobile  
+- Integração com o Java  
+- Fluxo completo de testes  
+- Arquitetura geral  
+
+📌 **Link do vídeo:**  
+
+https://youtu.be/A_wrS8L39-g
+
+---
+
+# 👥 7. Integrantes
+- **Felipe Horta Gresele – RM556955**  
+- **Arthur Cardoso Carinhanha – RM550615**  
+- **João Henrique Dias – RM556221**
+
+---
+
+# ✔️ 8. Conclusão
+Este projeto atende todos os requisitos da disciplina:
+
+- IA Generativa (Gemini 2.5)  
+- Integração com Web, Mobile e IoT  
+- REST API funcional e documentada  
+- Deploy de todos os serviços  
+- Demonstração completa em vídeo  
+
