@@ -2,10 +2,21 @@ import os
 import google.generativeai as genai
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
-from db_utils import log_chat
+# Importando as duas funções do db_utils
+from db_utils import log_chat, setup_database 
 
 load_dotenv()
 
+print("Iniciando verificação e configuração do esquema do banco de dados...")
+try:
+    setup_database() 
+    print("✅ Esquema do DB verificado/criado com sucesso.")
+except Exception:
+    # A exceção é tratada dentro do setup_database, mas se der erro aqui,
+    # o programa não prossegue e o deploy/serviço falhará, o que é o correto.
+    print("❌ Falha crítica na inicialização do banco de dados. Verifique credenciais.")
+
+# Cria a aplicação Flask SÓ DEPOIS da inicialização do DB.
 app = Flask(__name__)
 
 # Configura a API Key do Gemini
@@ -27,8 +38,8 @@ def generate_plan():
         Este plano deve ser composto por:
         1.  **Missão Principal:** Um resumo conciso do objetivo.
         2.  **Passos Acionáveis (5 a 7 passos):** Uma lista numerada de ações concretas e quantificáveis, se possível, que o usuário pode realizar. Cada passo deve ser uma \"tarefa\" a ser concluída.
-            *   Sugira como cada passo pode ser acompanhado ou \"concluído\".
-            *   Pense em ações que poderiam, no futuro, ser conectadas a dados de IoT ou comportamentos (IoB).
+            * Sugira como cada passo pode ser acompanhado ou \"concluído\".
+            * Pense em ações que poderiam, no futuro, ser conectadas a dados de IoT ou comportamentos (IoB).
         3.  **Dicas para Superar Desafios:** Conselhos práticos para as dificuldades comuns associadas a esses passos no contexto brasileiro.
         4.  **Recursos e Ferramentas Úteis:** Sugestões de aplicativos, sites, tecnologias ou iniciativas locais (com exemplos no Brasil) que podem auxiliar na missão.
         5.  **Impacto Esperado:** Uma breve descrição do impacto positivo que a conclusão desta missão terá.
@@ -51,6 +62,7 @@ def generate_plan():
             generated_plan = "Erro ao ler resposta da IA."
 
         # Registrar no Postgres
+        # Se a tabela falhou na criação, o log_chat falhará, mas a aplicação principal retornará a resposta do Gemini.
         log_chat(sustainability_goal, generated_plan)
 
         return jsonify({"plan": generated_plan})
@@ -59,10 +71,5 @@ def generate_plan():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    # Para rodar em ambiente de desenvolvimento
-    print("Iniciando verificação do esquema do banco de dados...")
-    setup_database() 
-    print("Esquema verificado. Iniciando servidor Flask.")
-    
-    # Para rodar em ambiente de desenvolvimento
+    # Este bloco é executado apenas localmente.
     app.run(host='0.0.0.0', port=5000)
