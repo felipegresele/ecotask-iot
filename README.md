@@ -54,7 +54,7 @@ Se o usuário enviar algo **fora do tema**, a resposta será:
 # 🗄️ 3. Banco de Dados (Python)
 A API em Python utiliza um **banco PostgreSQL hospedado em deploy**, garantindo persistência e integração com o sistema.
 
-Dados do banco
+Dados do banco para conexão:
 ```
 Hostname: dpg-d4dl5rq4d50c73drekvg-a
 ```
