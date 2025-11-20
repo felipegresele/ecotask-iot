@@ -19,6 +19,11 @@ Toda a demonstração detalhada das funcionalidades da aplicação está dispon�
 
 # 🤖 2. Endpoint Principal da IA (Python) – *Deploy ativo*
 
+### **Link Deploy:**
+```
+https://ecotask-iot.onrender.com
+```
+
 ### **URL:**
 ```
 https://ecotask-iot.onrender.com/api/generate-plan
@@ -71,6 +76,11 @@ Embora a IA principal seja a do Python, o projeto também possui integração co
 ---
 
 ## ✔️ 5.1 Criar Conta no Java
+
+### **Link Deploy:**
+```
+https://ecotask-java.onrender.com
+```
 
 ### Endpoint:
 ```
