@@ -55,14 +55,24 @@ Se o usuário enviar algo **fora do tema**, a resposta será:
 A API em Python utiliza um **banco PostgreSQL hospedado em deploy**, garantindo persistência e integração com o sistema.
 
 Dados do banco
-
+```
 Hostname: dpg-d4dl5rq4d50c73drekvg-a
+```
+```
 Port: 5432
+```
+```
 Database: ecotask_api
+```
+```
 Username: admin
+```
+```
 Password: 6VPli4erVIm2qLc7OxHwTKFOqKnrQBgl
+```
+```
 Internal Database URL: postgresql://admin:6VPli4erVIm2qLc7OxHwTKFOqKnrQBgl@dpg-d4dl5rq4d50c73drekvg-a/ecotask_api
-
+```
 ---
 
 # 📱 4. Integração com o Mobile
